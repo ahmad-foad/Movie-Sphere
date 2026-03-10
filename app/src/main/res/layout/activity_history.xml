@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0D1B2A">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#1B263B"
+        android:padding="15dp"
+        android:elevation="4dp">
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="←"
+            android:textSize="24sp"
+            android:backgroundTint="#415A77"
+            android:textColor="#E0E1DD"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="📺 History"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#E0E1DD"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"/>
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+
+    </LinearLayout>
+
+    <!-- Content -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recently Viewed"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#778DA9"
+            android:layout_marginBottom="15dp"/>
+
+        <ListView
+            android:id="@+id/historyListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10dp"/>
+
+        <TextView
+            android:id="@+id/emptyHistoryTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="No viewing history yet.\n\nStart watching movies! 🎬"
+            android:textSize="18sp"
+            android:textColor="#778DA9"
+            android:gravity="center"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+</LinearLayout>

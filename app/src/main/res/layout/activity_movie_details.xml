@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0D1B2A">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Movie Poster -->
+        <ImageView
+            android:id="@+id/moviePosterImageView"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:scaleType="centerCrop"
+            android:background="#415A77"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Movie Title -->
+            <TextView
+                android:id="@+id/movieTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Movie Title"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="#E0E1DD"
+                android:layout_marginBottom="10dp"/>
+
+            <!-- Year, Rating, Runtime -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="15dp">
+
+                <TextView
+                    android:id="@+id/movieYearTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2020"
+                    android:textSize="16sp"
+                    android:textColor="#778DA9"
+                    android:layout_marginRight="15dp"/>
+
+                <TextView
+                    android:id="@+id/movieRatingTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⭐ 8.0"
+                    android:textSize="16sp"
+                    android:textColor="#FFD700"
+                    android:layout_marginRight="15dp"/>
+
+                <TextView
+                    android:id="@+id/movieRuntimeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="120 min"
+                    android:textSize="16sp"
+                    android:textColor="#778DA9"/>
+
+            </LinearLayout>
+
+            <!-- Genre -->
+            <TextView
+                android:id="@+id/movieGenreTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Action, Drama"
+                android:textSize="14sp"
+                android:textColor="#778DA9"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- Action Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="25dp">
+
+                <Button
+                    android:id="@+id/favouriteButton"
+                    android:layout_width="0dp"
+                    android:layout_height="55dp"
+                    android:layout_weight="1"
+                    android:text="🤍 Favourite"
+                    android:textSize="14sp"
+                    android:backgroundTint="#1B263B"
+                    android:textColor="#E0E1DD"
+                    android:layout_marginRight="8dp"/>
+
+                <Button
+                    android:id="@+id/shareButton"
+                    android:layout_width="0dp"
+                    android:layout_height="55dp"
+                    android:layout_weight="1"
+                    android:text="📤 Share"
+                    android:textSize="14sp"
+                    android:backgroundTint="#1B263B"
+                    android:textColor="#E0E1DD"
+                    android:layout_marginLeft="8dp"/>
+
+            </LinearLayout>
+
+            <!-- Watch Trailer Button -->
+            <Button
+                android:id="@+id/watchTrailerButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="▶️ Watch Trailer"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:backgroundTint="#E0E1DD"
+                android:textColor="#0D1B2A"
+                android:layout_marginBottom="25dp"/>
+
+            <!-- Plot Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📖 Plot"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#E0E1DD"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/moviePlotTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Movie plot description goes here..."
+                android:textSize="16sp"
+                android:textColor="#778DA9"
+                android:lineSpacingExtra="4dp"
+                android:layout_marginBottom="25dp"/>
+
+            <!-- Director -->
+            <TextView
+                android:id="@+id/movieDirectorTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🎬 Director: Unknown"
+                android:textSize="16sp"
+                android:textColor="#778DA9"
+                android:layout_marginBottom="10dp"/>
+
+            <!-- Actors -->
+            <TextView
+                android:id="@+id/movieActorsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🎭 Cast: Unknown"
+                android:textSize="16sp"
+                android:textColor="#778DA9"
+                android:layout_marginBottom="10dp"/>
+
+            <!-- Language -->
+            <TextView
+                android:id="@+id/movieLanguageTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🌍 Language: English"
+                android:textSize="16sp"
+                android:textColor="#778DA9"
+                android:layout_marginBottom="10dp"/>
+
+            <!-- Awards -->
+            <TextView
+                android:id="@+id/movieAwardsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🏆 Awards: N/A"
+                android:textSize="16sp"
+                android:textColor="#778DA9"
+                android:layout_marginBottom="30dp"/>
+
+            <!-- Back Button -->
+            <Button
+                android:id="@+id/backButton"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:text="← Back to Home"
+                android:textSize="16sp"
+                android:backgroundTint="#415A77"
+                android:textColor="#E0E1DD"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

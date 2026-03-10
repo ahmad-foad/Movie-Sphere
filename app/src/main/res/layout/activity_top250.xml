@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0D1B2A">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#1B263B"
+        android:padding="15dp"
+        android:elevation="4dp">
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="←"
+            android:textSize="24sp"
+            android:backgroundTint="#415A77"
+            android:textColor="#E0E1DD"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="🏆 Top 250 Movies"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#E0E1DD"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"/>
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <!-- Search Bar -->
+            <EditText
+                android:id="@+id/searchEditText"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:hint="🔍 Search top movies..."
+                android:textColorHint="#415A77"
+                android:textColor="#E0E1DD"
+                android:background="#1B263B"
+                android:padding="15dp"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- Filters Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🎭 Filter by Genre"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#E0E1DD"
+                android:layout_marginBottom="10dp"/>
+
+            <!-- Genre Checkboxes Row 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+
+                <CheckBox
+                    android:id="@+id/actionCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Action"
+                    android:textColor="#E0E1DD"
+                    android:textSize="14sp"/>
+
+                <CheckBox
+                    android:id="@+id/comedyCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Comedy"
+                    android:textColor="#E0E1DD"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+            <!-- Genre Checkboxes Row 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+
+                <CheckBox
+                    android:id="@+id/dramaCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Drama"
+                    android:textColor="#E0E1DD"
+                    android:textSize="14sp"/>
+
+                <CheckBox
+                    android:id="@+id/horrorCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Horror"
+                    android:textColor="#E0E1DD"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+            <!-- Genre Checkboxes Row 3 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="20dp">
+
+                <CheckBox
+                    android:id="@+id/scifiCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sci-Fi"
+                    android:textColor="#E0E1DD"
+                    android:textSize="14sp"/>
+
+                <CheckBox
+                    android:id="@+id/thrillerCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Thriller"
+                    android:textColor="#E0E1DD"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+            <!-- Year Filter -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📅 Filter by Year"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#E0E1DD"
+                android:layout_marginBottom="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="20dp">
+
+                <EditText
+                    android:id="@+id/yearEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:hint="Enter year"
+                    android:textColorHint="#415A77"
+                    android:textColor="#E0E1DD"
+                    android:background="#1B263B"
+                    android:padding="12dp"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:layout_marginRight="10dp"/>
+
+                <Button
+                    android:id="@+id/clearFiltersButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:text="Clear"
+                    android:textColor="#E0E1DD"
+                    android:backgroundTint="#415A77"/>
+
+            </LinearLayout>
+
+            <!-- Movies List Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🏆 Top Rated Movies"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#E0E1DD"
+                android:layout_marginBottom="15dp"/>
+
+            <!-- Movies ListView -->
+            <ListView
+                android:id="@+id/moviesListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="10dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
