@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="15dp">
+            android:padding="0dp">
 
             <!-- Search Bar -->
             <LinearLayout
@@ -66,26 +66,22 @@
                 <!-- Search Bar -->
                 <EditText
                     android:id="@+id/searchEditText"
-                    android:layout_width="199dp"
+                    android:layout_width="match_parent"
                     android:layout_height="61dp"
                     android:layout_marginBottom="15dp"
                     android:background="#1B263B"
                     android:hint="🔍 Search movies..."
-                    android:padding="0dp"
+                    android:padding="12dp"
                     android:textColor="#E0E1DD"
-                    android:textColorHint="#415A77" />
+                    android:textColorHint="#415A77"
+                    android:textSize="16sp"/>
 
-                <!-- Top 250 Button -->
+                <!-- Top 250 Button (Hidden) -->
                 <Button
                     android:id="@+id/top250Button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="🏆 Top 250 Movies (IMDb)"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:backgroundTint="#FFD700"
-                    android:textColor="#0D1B2A"
-                    android:layout_marginBottom="20dp"/>
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 
@@ -234,9 +230,9 @@
             <ListView
                 android:id="@+id/moviesListView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="282dp"
                 android:divider="@android:color/transparent"
-                android:dividerHeight="10dp"/>
+                android:dividerHeight="10dp" />
 
         </LinearLayout>
 

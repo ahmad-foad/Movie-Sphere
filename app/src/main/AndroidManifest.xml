@@ -28,7 +28,6 @@
         <activity android:name=".ProfileActivity" android:exported="false"/>
         <activity android:name=".HistoryActivity" android:exported="false"/>
         <activity android:name=".MyFavouritesActivity" android:exported="false"/>
-        <activity android:name=".Top250Activity" android:exported="false"/>
 
     </application>
 

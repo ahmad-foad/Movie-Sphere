@@ -16,17 +16,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class HomeActivity extends AppCompatActivity {
 
     EditText searchEditText, yearEditText;
-    Button profileButton, proButton, clearFiltersButton, top250Button;
+    Button profileButton, proButton, clearFiltersButton;
     CheckBox actionCheckBox, comedyCheckBox, dramaCheckBox, horrorCheckBox, scifiCheckBox, thrillerCheckBox;
     ListView moviesListView;
 
     ArrayList<MovieItem> moviesList;
-    ArrayList<MovieItem> allDefaultMovies; // Store all default movies
+    ArrayList<MovieItem> allDefaultMovies;
     MovieAdapter movieAdapter;
+    HashMap<String, ArrayList<String>> movieGenres;
 
     SharedPreferences sharedPreferences;
     String username;
@@ -41,13 +43,11 @@ public class HomeActivity extends AppCompatActivity {
         username = sharedPreferences.getString("username", "User");
         userId = sharedPreferences.getInt("userId", -1);
 
-        // Initialize views
         searchEditText = findViewById(R.id.searchEditText);
         yearEditText = findViewById(R.id.yearEditText);
         profileButton = findViewById(R.id.profileButton);
         proButton = findViewById(R.id.proButton);
         clearFiltersButton = findViewById(R.id.clearFiltersButton);
-        top250Button = findViewById(R.id.top250Button);
 
         actionCheckBox = findViewById(R.id.actionCheckBox);
         comedyCheckBox = findViewById(R.id.comedyCheckBox);
@@ -60,13 +60,13 @@ public class HomeActivity extends AppCompatActivity {
 
         moviesList = new ArrayList<>();
         allDefaultMovies = new ArrayList<>();
+        movieGenres = new HashMap<>();
         movieAdapter = new MovieAdapter(this, moviesList);
         moviesListView.setAdapter(movieAdapter);
 
-        // Load 20 default popular movies
+        initializeGenreMappings();
         loadDefaultMovies();
 
-        // Live search as you type
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -75,12 +75,8 @@ public class HomeActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String query = s.toString().trim();
                 if (query.isEmpty()) {
-                    // Show all default movies when search is empty
-                    moviesList.clear();
-                    moviesList.addAll(allDefaultMovies);
-                    movieAdapter.notifyDataSetChanged();
+                    applyGenreFiltersToDefaults();
                 } else {
-                    // Search from API
                     performSearch();
                 }
             }
@@ -89,93 +85,50 @@ public class HomeActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        // Profile button
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
-                startActivity(intent);
-            }
+        profileButton.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+            startActivity(intent);
         });
 
-        // Pro button
-        proButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(HomeActivity.this, "⭐ Pro feature coming soon!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        proButton.setOnClickListener(v ->
+            Toast.makeText(HomeActivity.this, "⭐ Pro feature coming soon!", Toast.LENGTH_SHORT).show()
+        );
 
-        // Top 250 button
-        top250Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, Top250Activity.class);
-                startActivity(intent);
-            }
-        });
+        clearFiltersButton.setOnClickListener(v -> clearAllFilters());
 
-        // Clear filters button
-        clearFiltersButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearAllFilters();
-            }
-        });
-
-        // Checkbox listeners
         CheckBox[] checkBoxes = {actionCheckBox, comedyCheckBox, dramaCheckBox, horrorCheckBox, scifiCheckBox, thrillerCheckBox};
         for (CheckBox checkBox : checkBoxes) {
             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (searchEditText.getText().toString().trim().isEmpty()) {
-                    // If no search query, just show message
-                    Toast.makeText(HomeActivity.this, "Type a movie name to filter by genre", Toast.LENGTH_SHORT).show();
+                    applyGenreFiltersToDefaults();
                 } else {
                     performSearch();
                 }
             });
         }
 
-        // Movie item click
-        moviesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MovieItem movie = moviesList.get(position);
-
-                Intent intent = new Intent(HomeActivity.this, MovieDetailsActivity.class);
-                intent.putExtra("movieTitle", movie.getTitle());
-                intent.putExtra("imdbID", movie.getImdbID());
-                startActivity(intent);
-            }
+        moviesListView.setOnItemClickListener((parent, view, position, id) -> {
+            MovieItem movie = moviesList.get(position);
+            Intent intent = new Intent(HomeActivity.this, MovieDetailsActivity.class);
+            intent.putExtra("movieTitle", movie.getTitle());
+            intent.putExtra("imdbID", movie.getImdbID());
+            startActivity(intent);
         });
     }
 
     private void loadDefaultMovies() {
-        // List of 20 popular movies to load by default
         String[] defaultMovieTitles = {
-                "The Shawshank Redemption",
-                "The Godfather",
-                "The Dark Knight",
-                "Pulp Fiction",
-                "Forrest Gump",
-                "Inception",
-                "The Matrix",
-                "Interstellar",
-                "Fight Club",
-                "Goodfellas",
-                "The Silence of the Lambs",
-                "Saving Private Ryan",
-                "The Green Mile",
-                "The Prestige",
-                "The Departed",
-                "Gladiator",
-                "The Lion King",
-                "Back to the Future",
-                "The Avengers",
-                "Spider-Man"
+                "The Shawshank Redemption", "The Godfather", "The Dark Knight", "Pulp Fiction",
+                "Forrest Gump", "Inception", "The Matrix", "Interstellar", "Fight Club", "Goodfellas",
+                "The Silence of the Lambs", "Saving Private Ryan", "The Green Mile", "The Prestige",
+                "The Departed", "Gladiator", "The Lion King", "Back to the Future", "The Avengers", "Spider-Man",
+                "Titanic", "Avatar", "The Wizard of Oz", "Citizen Kane", "Casablanca",
+                "Singin' in the Rain", "It's a Wonderful Life", "Vertigo", "Psycho", "Jaws",
+                "E.T. the Extra-Terrestrial", "Raiders of the Lost Ark", "Return of the Jedi",
+                "The Empire Strikes Back", "Jurassic Park", "The Sixth Sense", "The Usual Suspects",
+                "Se7en", "Heat", "The Social Network"
         };
 
-        // Fetch each movie from API
         for (String title : defaultMovieTitles) {
             fetchMovieByTitle(title);
         }
@@ -199,13 +152,13 @@ public class HomeActivity extends AppCompatActivity {
                         movieAdapter.notifyDataSetChanged();
                     }
                 } catch (Exception e) {
-                    // Silently fail for individual movies
+                    // Silently fail
                 }
             }
 
             @Override
             public void onError(String error) {
-                // Silently fail for individual movies
+                // Silently fail
             }
         });
     }
@@ -213,44 +166,12 @@ public class HomeActivity extends AppCompatActivity {
     private void performSearch() {
         String query = searchEditText.getText().toString().trim();
         String year = yearEditText.getText().toString().trim();
-        String genre = getSelectedGenre();
 
         if (query.isEmpty()) {
             return;
         }
 
-        // Add genre to search query if selected
-        if (!genre.isEmpty()) {
-            query = query + " " + genre;
-        }
-
         searchMovies(query, year.isEmpty() ? null : year, null);
-    }
-
-    private String getSelectedGenre() {
-        if (actionCheckBox.isChecked()) return "action";
-        if (comedyCheckBox.isChecked()) return "comedy";
-        if (dramaCheckBox.isChecked()) return "drama";
-        if (horrorCheckBox.isChecked()) return "horror";
-        if (scifiCheckBox.isChecked()) return "sci-fi";
-        if (thrillerCheckBox.isChecked()) return "thriller";
-        return "";
-    }
-
-    private void clearAllFilters() {
-        searchEditText.setText("");
-        yearEditText.setText("");
-        actionCheckBox.setChecked(false);
-        comedyCheckBox.setChecked(false);
-        dramaCheckBox.setChecked(false);
-        horrorCheckBox.setChecked(false);
-        scifiCheckBox.setChecked(false);
-        thrillerCheckBox.setChecked(false);
-
-        // Show all default movies again
-        moviesList.clear();
-        moviesList.addAll(allDefaultMovies);
-        movieAdapter.notifyDataSetChanged();
     }
 
     private void searchMovies(String query, String year, String type) {
@@ -263,7 +184,6 @@ public class HomeActivity extends AppCompatActivity {
 
                         moviesList.clear();
 
-                        // Show ALL results from search
                         for (int i = 0; i < searchResults.length(); i++) {
                             JSONObject movie = searchResults.getJSONObject(i);
 
@@ -298,4 +218,112 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void clearAllFilters() {
+        searchEditText.setText("");
+        yearEditText.setText("");
+        actionCheckBox.setChecked(false);
+        comedyCheckBox.setChecked(false);
+        dramaCheckBox.setChecked(false);
+        horrorCheckBox.setChecked(false);
+        scifiCheckBox.setChecked(false);
+        thrillerCheckBox.setChecked(false);
+
+        moviesList.clear();
+        moviesList.addAll(allDefaultMovies);
+        movieAdapter.notifyDataSetChanged();
+    }
+
+    private void initializeGenreMappings() {
+        movieGenres.put("The Shawshank Redemption", createGenreList("drama"));
+        movieGenres.put("The Godfather", createGenreList("drama", "crime"));
+        movieGenres.put("The Dark Knight", createGenreList("action", "crime", "drama"));
+        movieGenres.put("Pulp Fiction", createGenreList("crime", "drama"));
+        movieGenres.put("Forrest Gump", createGenreList("drama", "romance"));
+        movieGenres.put("Inception", createGenreList("action", "sci-fi", "thriller"));
+        movieGenres.put("The Matrix", createGenreList("action", "sci-fi"));
+        movieGenres.put("Interstellar", createGenreList("adventure", "drama", "sci-fi"));
+        movieGenres.put("Fight Club", createGenreList("drama", "thriller"));
+        movieGenres.put("Goodfellas", createGenreList("crime", "drama"));
+        movieGenres.put("The Silence of the Lambs", createGenreList("crime", "drama", "thriller"));
+        movieGenres.put("Saving Private Ryan", createGenreList("drama", "war"));
+        movieGenres.put("The Green Mile", createGenreList("crime", "drama"));
+        movieGenres.put("The Prestige", createGenreList("drama", "mystery", "sci-fi"));
+        movieGenres.put("The Departed", createGenreList("crime", "drama", "thriller"));
+        movieGenres.put("Gladiator", createGenreList("action", "adventure", "drama"));
+        movieGenres.put("The Lion King", createGenreList("animation", "adventure", "comedy"));
+        movieGenres.put("Back to the Future", createGenreList("adventure", "comedy", "sci-fi"));
+        movieGenres.put("The Avengers", createGenreList("action", "adventure", "sci-fi"));
+        movieGenres.put("Spider-Man", createGenreList("action", "adventure", "sci-fi"));
+        movieGenres.put("Titanic", createGenreList("drama", "romance"));
+        movieGenres.put("Avatar", createGenreList("action", "adventure", "sci-fi"));
+        movieGenres.put("The Wizard of Oz", createGenreList("adventure", "family", "fantasy"));
+        movieGenres.put("Citizen Kane", createGenreList("drama", "mystery"));
+        movieGenres.put("Casablanca", createGenreList("drama", "romance", "war"));
+        movieGenres.put("Singin' in the Rain", createGenreList("comedy", "musical", "romance"));
+        movieGenres.put("It's a Wonderful Life", createGenreList("comedy", "drama", "family"));
+        movieGenres.put("Vertigo", createGenreList("mystery", "thriller"));
+        movieGenres.put("Psycho", createGenreList("horror", "thriller"));
+        movieGenres.put("Jaws", createGenreList("adventure", "horror", "thriller"));
+        movieGenres.put("E.T. the Extra-Terrestrial", createGenreList("adventure", "family", "sci-fi"));
+        movieGenres.put("Raiders of the Lost Ark", createGenreList("action", "adventure"));
+        movieGenres.put("Return of the Jedi", createGenreList("action", "adventure", "sci-fi"));
+        movieGenres.put("The Empire Strikes Back", createGenreList("action", "adventure", "sci-fi"));
+        movieGenres.put("Jurassic Park", createGenreList("action", "adventure", "sci-fi"));
+        movieGenres.put("The Sixth Sense", createGenreList("drama", "mystery", "thriller"));
+        movieGenres.put("The Usual Suspects", createGenreList("crime", "drama", "mystery"));
+        movieGenres.put("Se7en", createGenreList("crime", "drama", "mystery", "thriller"));
+        movieGenres.put("Heat", createGenreList("action", "crime", "drama"));
+        movieGenres.put("The Social Network", createGenreList("biography", "drama"));
+    }
+
+    private ArrayList<String> createGenreList(String... genres) {
+        ArrayList<String> list = new ArrayList<>();
+        for (String genre : genres) {
+            list.add(genre.toLowerCase());
+        }
+        return list;
+    }
+
+    private void applyGenreFiltersToDefaults() {
+        ArrayList<MovieItem> filteredMovies = new ArrayList<>();
+        String year = yearEditText.getText().toString().trim();
+
+        ArrayList<String> selectedGenres = new ArrayList<>();
+        if (actionCheckBox.isChecked()) selectedGenres.add("action");
+        if (comedyCheckBox.isChecked()) selectedGenres.add("comedy");
+        if (dramaCheckBox.isChecked()) selectedGenres.add("drama");
+        if (horrorCheckBox.isChecked()) selectedGenres.add("horror");
+        if (scifiCheckBox.isChecked()) selectedGenres.add("sci-fi");
+        if (thrillerCheckBox.isChecked()) selectedGenres.add("thriller");
+
+        if (selectedGenres.isEmpty()) {
+            moviesList.clear();
+            moviesList.addAll(allDefaultMovies);
+        } else {
+            for (MovieItem movie : allDefaultMovies) {
+                ArrayList<String> movieGenresList = movieGenres.get(movie.getTitle());
+                if (movieGenresList != null) {
+                    boolean matchesGenre = false;
+                    for (String selectedGenre : selectedGenres) {
+                        if (movieGenresList.contains(selectedGenre)) {
+                            matchesGenre = true;
+                            break;
+                        }
+                    }
+
+                    boolean matchesYear = year.isEmpty() || movie.getYear().contains(year);
+
+                    if (matchesGenre && matchesYear) {
+                        filteredMovies.add(movie);
+                    }
+                }
+            }
+            moviesList.clear();
+            moviesList.addAll(filteredMovies);
+        }
+
+        movieAdapter.notifyDataSetChanged();
+    }
 }
+
