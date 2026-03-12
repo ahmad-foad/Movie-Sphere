@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "MovieSphere.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2; // Incremented version
 
     // Users Table
     private static final String TABLE_USERS = "users";
@@ -25,6 +25,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_HISTORY_MOVIE_TITLE = "movie_title";
     private static final String COL_HISTORY_MOVIE_ID = "movie_id";
     private static final String COL_HISTORY_POSTER = "poster_url";
+    private static final String COL_HISTORY_YEAR = "year"; // New column
+    private static final String COL_HISTORY_TYPE = "type"; // New column
     private static final String COL_HISTORY_DATE = "date_added";
 
     // Favourites Table
@@ -58,6 +60,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_HISTORY_MOVIE_TITLE + " TEXT NOT NULL, " +
                 COL_HISTORY_MOVIE_ID + " TEXT, " +
                 COL_HISTORY_POSTER + " TEXT, " +
+                COL_HISTORY_YEAR + " TEXT, " +
+                COL_HISTORY_TYPE + " TEXT, " +
                 COL_HISTORY_DATE + " DATETIME DEFAULT CURRENT_TIMESTAMP, " +
                 "FOREIGN KEY(" + COL_HISTORY_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COL_USER_ID + "))";
         db.execSQL(createHistoryTable);
@@ -78,10 +82,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_HISTORY);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAVOURITES);
-        onCreate(db);
+        if (oldVersion < 2) {
+            // Add columns if upgrading to version 2
+            db.execSQL("ALTER TABLE " + TABLE_HISTORY + " ADD COLUMN " + COL_HISTORY_YEAR + " TEXT");
+            db.execSQL("ALTER TABLE " + TABLE_HISTORY + " ADD COLUMN " + COL_HISTORY_TYPE + " TEXT");
+        }
     }
 
     // ==================== USER METHODS ====================
@@ -144,7 +149,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // ==================== HISTORY METHODS ====================
 
-    public boolean addToHistory(int userId, String movieTitle, String movieId, String posterUrl) {
+    public boolean addToHistory(int userId, String movieTitle, String movieId, String posterUrl, String year, String type) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // Check if already exists
@@ -153,7 +158,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(checkQuery, new String[]{String.valueOf(userId), movieTitle});
 
         if (cursor.getCount() > 0) {
-            // Already exists, don't add duplicate
+            // Update the date if it already exists
+            ContentValues values = new ContentValues();
+            values.put(COL_HISTORY_DATE, "datetime('now')");
+            db.update(TABLE_HISTORY, values, COL_HISTORY_USER_ID + "=? AND " + COL_HISTORY_MOVIE_TITLE + "=?", 
+                    new String[]{String.valueOf(userId), movieTitle});
             cursor.close();
             db.close();
             return true;
@@ -165,6 +174,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COL_HISTORY_MOVIE_TITLE, movieTitle);
         values.put(COL_HISTORY_MOVIE_ID, movieId);
         values.put(COL_HISTORY_POSTER, posterUrl);
+        values.put(COL_HISTORY_YEAR, year);
+        values.put(COL_HISTORY_TYPE, type);
 
         long result = db.insert(TABLE_HISTORY, null, values);
         db.close();

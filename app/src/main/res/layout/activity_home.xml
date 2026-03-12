@@ -1,82 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#0D1B2A">
 
-    <!-- Header -->
+    <!-- Header with Gradient Background -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#1B263B"
+        android:orientation="vertical"
+        android:background="@drawable/gradient_header"
         android:padding="15dp"
-        android:elevation="4dp">
+        android:elevation="8dp">
 
-        <TextView
-            android:layout_width="0dp"
+        <!-- Title Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="🎬 MovieSphere"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="#E0E1DD"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-        <Button
-            android:id="@+id/proButton"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="🎬 MovieSphere"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="#E0E1DD"/>
+
+        </LinearLayout>
+
+        <!-- Subtitle -->
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="⭐ PRO"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:textColor="#0D1B2A"
-            android:backgroundTint="#FFD700"
-            android:layout_marginRight="10dp"/>
-
-        <Button
-            android:id="@+id/profileButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:text="👤"
-            android:textSize="20sp"
-            android:backgroundTint="#415A77"/>
+            android:layout_height="wrap_content"
+            android:text="Explore thousands of movies"
+            android:textSize="12sp"
+            android:textColor="#B0BAC9"
+            android:layout_marginTop="8dp"/>
 
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="0dp">
+            android:padding="15dp">
 
-            <!-- Search Bar -->
+            <!-- Search Bar with Icon -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:background="#1B263B"
-                android:padding="0dp"
-                android:layout_marginBottom="0dp">
+                android:background="@drawable/rounded_search_background"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="12dp"
+                android:layout_marginBottom="20dp">
 
-                <!-- Search Bar -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🔍"
+                    android:textSize="18sp"
+                    android:layout_marginRight="8dp"/>
+
                 <EditText
                     android:id="@+id/searchEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="61dp"
-                    android:layout_marginBottom="15dp"
-                    android:background="#1B263B"
-                    android:hint="🔍 Search movies..."
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="Search movies..."
                     android:padding="12dp"
                     android:textColor="#E0E1DD"
                     android:textColorHint="#415A77"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    android:inputType="text"/>
 
-                <!-- Top 250 Button (Hidden) -->
                 <Button
                     android:id="@+id/top250Button"
                     android:layout_width="0dp"
@@ -85,40 +94,53 @@
 
             </LinearLayout>
 
-            <!-- Filters Section -->
+            <!-- Trending/Popular Section Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✨ Trending Now"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#FFD700"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- Genre Filters with Chips -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="🎭 Filter by Genre"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#E0E1DD"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="8dp"/>
 
             <!-- Genre Checkboxes Row 1 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="8dp">
 
                 <CheckBox
                     android:id="@+id/actionCheckBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Action"
+                    android:text="🎬 Action"
                     android:textColor="#E0E1DD"
-                    android:textSize="14sp"/>
+                    android:textSize="13sp"
+                    android:buttonTint="#FFD700"/>
 
                 <CheckBox
                     android:id="@+id/comedyCheckBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Comedy"
+                    android:text="😂 Comedy"
                     android:textColor="#E0E1DD"
-                    android:textSize="14sp"/>
+                    android:textSize="13sp"
+                    android:buttonTint="#FFD700"/>
 
             </LinearLayout>
 
@@ -127,25 +149,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="8dp">
 
                 <CheckBox
                     android:id="@+id/dramaCheckBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Drama"
+                    android:text="🎭 Drama"
                     android:textColor="#E0E1DD"
-                    android:textSize="14sp"/>
+                    android:textSize="13sp"
+                    android:buttonTint="#FFD700"/>
 
                 <CheckBox
                     android:id="@+id/horrorCheckBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Horror"
+                    android:text="😱 Horror"
                     android:textColor="#E0E1DD"
-                    android:textSize="14sp"/>
+                    android:textSize="13sp"
+                    android:buttonTint="#FFD700"/>
 
             </LinearLayout>
 
@@ -161,60 +185,29 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Sci-Fi"
+                    android:text="🚀 Sci-Fi"
                     android:textColor="#E0E1DD"
-                    android:textSize="14sp"/>
+                    android:textSize="13sp"
+                    android:buttonTint="#FFD700"/>
 
                 <CheckBox
                     android:id="@+id/thrillerCheckBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Thriller"
+                    android:text="⚡ Thriller"
                     android:textColor="#E0E1DD"
-                    android:textSize="14sp"/>
+                    android:textSize="13sp"
+                    android:buttonTint="#FFD700"/>
 
             </LinearLayout>
 
-            <!-- Year Filter -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="📅 Filter by Year"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#E0E1DD"
-                android:layout_marginBottom="10dp"/>
-
-            <LinearLayout
+            <!-- Divider -->
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="20dp">
-
-                <EditText
-                    android:id="@+id/yearEditText"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:hint="Enter year (e.g., 2020)"
-                    android:textColorHint="#415A77"
-                    android:textColor="#E0E1DD"
-                    android:background="#1B263B"
-                    android:padding="12dp"
-                    android:inputType="number"
-                    android:maxLength="4"
-                    android:layout_marginRight="10dp"/>
-
-                <Button
-                    android:id="@+id/clearFiltersButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:text="Clear"
-                    android:textColor="#E0E1DD"
-                    android:backgroundTint="#415A77"/>
-
-            </LinearLayout>
+                android:layout_height="1dp"
+                android:background="#415A77"
+                android:layout_marginBottom="15dp"/>
 
             <!-- Movies List Title -->
             <TextView
@@ -230,12 +223,72 @@
             <ListView
                 android:id="@+id/moviesListView"
                 android:layout_width="match_parent"
-                android:layout_height="282dp"
+                android:layout_height="wrap_content"
                 android:divider="@android:color/transparent"
-                android:dividerHeight="10dp" />
+                android:dividerHeight="8dp" />
 
         </LinearLayout>
 
     </ScrollView>
+
+    <!-- Bottom Navigation Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#1B263B"
+        android:elevation="8dp"
+        android:gravity="center"
+        android:paddingVertical="8dp">
+
+        <Button
+            android:id="@+id/navHomeButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="🏠\nHome"
+            android:textSize="12sp"
+            android:textColor="#FFD700"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="8dp"/>
+
+        <Button
+            android:id="@+id/navFavouritesButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="❤️\nFavourites"
+            android:textSize="12sp"
+            android:textColor="#778DA9"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="8dp"/>
+
+        <Button
+            android:id="@+id/navHistoryButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="📺\nHistory"
+            android:textSize="12sp"
+            android:textColor="#778DA9"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="8dp"/>
+
+        <Button
+            android:id="@+id/navProfileButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="👤\nProfile"
+            android:textSize="12sp"
+            android:textColor="#778DA9"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="8dp"/>
+
+    </LinearLayout>
 
 </LinearLayout>

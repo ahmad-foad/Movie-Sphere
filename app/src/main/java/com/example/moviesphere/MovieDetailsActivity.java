@@ -17,9 +17,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     ImageView moviePosterImageView;
     TextView movieTitleTextView, movieYearTextView, movieRatingTextView, movieRuntimeTextView;
-    TextView movieGenreTextView, moviePlotTextView, movieDirectorTextView, movieActorsTextView;
-    TextView movieLanguageTextView, movieAwardsTextView;
-    Button favouriteButton, shareButton, watchTrailerButton, backButton;
+    TextView movieGenreTextView, moviePlotTextView;
+    Button favouriteButton, shareButton, trailerButton, backButton;
 
     DatabaseHelper databaseHelper;
     SharedPreferences sharedPreferences;
@@ -32,6 +31,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     String posterUrl = "";
     String rating = "";
     String year = "";
+    String type = "movie";
     String plot = "";
 
     @Override
@@ -55,13 +55,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
         movieRuntimeTextView = findViewById(R.id.movieRuntimeTextView);
         movieGenreTextView = findViewById(R.id.movieGenreTextView);
         moviePlotTextView = findViewById(R.id.moviePlotTextView);
-        movieDirectorTextView = findViewById(R.id.movieDirectorTextView);
-        movieActorsTextView = findViewById(R.id.movieActorsTextView);
-        movieLanguageTextView = findViewById(R.id.movieLanguageTextView);
-        movieAwardsTextView = findViewById(R.id.movieAwardsTextView);
         favouriteButton = findViewById(R.id.favouriteButton);
         shareButton = findViewById(R.id.shareButton);
-        watchTrailerButton = findViewById(R.id.watchTrailerButton);
+        trailerButton = findViewById(R.id.trailerButton);
         backButton = findViewById(R.id.backButton);
 
         // Set title
@@ -72,9 +68,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         // Fetch movie details from API
         fetchMovieDetails();
-
-        // Add to history
-        addToHistory();
 
         // Favourite button
         favouriteButton.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +86,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         });
 
         // Watch trailer button
-        watchTrailerButton.setOnClickListener(new View.OnClickListener() {
+        trailerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 watchTrailer();
@@ -121,22 +114,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
                         String runtime = movieData.optString("Runtime", "N/A");
                         String genre = movieData.optString("Genre", "N/A");
                         plot = movieData.optString("Plot", "No plot available.");
-                        String director = movieData.optString("Director", "N/A");
-                        String actors = movieData.optString("Actors", "N/A");
-                        String language = movieData.optString("Language", "N/A");
-                        String awards = movieData.optString("Awards", "N/A");
                         posterUrl = movieData.optString("Poster", "N/A");
+                        type = movieData.optString("Type", "movie");
 
                         // Update UI
-                        movieYearTextView.setText("📅 " + year);
-                        movieRatingTextView.setText("⭐ " + rating);
-                        movieRuntimeTextView.setText("⏱️ " + runtime);
-                        movieGenreTextView.setText("🎭 " + genre);
+                        movieYearTextView.setText(year);
+                        movieRatingTextView.setText(rating);
+                        movieRuntimeTextView.setText(runtime);
+                        movieGenreTextView.setText(genre);
                         moviePlotTextView.setText(plot);
-                        movieDirectorTextView.setText("🎬 Director: " + director);
-                        movieActorsTextView.setText("🎭 Cast: " + actors);
-                        movieLanguageTextView.setText("🌍 Language: " + language);
-                        movieAwardsTextView.setText("🏆 Awards: " + awards);
 
                         // Load poster
                         if (!posterUrl.equals("N/A") && !posterUrl.isEmpty()) {
@@ -145,6 +131,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
                                     .placeholder(android.R.color.darker_gray)
                                     .into(moviePosterImageView);
                         }
+
+                        // Add to history AFTER details are fetched
+                        addToHistory();
 
                     } else {
                         Toast.makeText(MovieDetailsActivity.this, "Movie details not found", Toast.LENGTH_SHORT).show();
@@ -163,7 +152,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     private void addToHistory() {
         if (userId != -1) {
-            databaseHelper.addToHistory(userId, movieTitle, imdbID, posterUrl);
+            databaseHelper.addToHistory(userId, movieTitle, imdbID, posterUrl, year, type);
         }
     }
 

@@ -10,24 +10,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#1B263B"
+        android:background="@drawable/gradient_header"
         android:padding="15dp"
-        android:elevation="4dp">
+        android:elevation="8dp">
 
         <Button
             android:id="@+id/backButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:text="←"
-            android:textSize="24sp"
-            android:backgroundTint="#415A77"
+            android:text="⬅️"
+            android:textSize="20sp"
+            android:background="?attr/selectableItemBackground"
             android:textColor="#E0E1DD"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="📺 History"
+            android:text="📺 Watch History"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="#E0E1DD"
@@ -43,17 +43,18 @@
     <!-- Content -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:padding="15dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Recently Viewed"
+            android:text="✨ Recently Viewed"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#778DA9"
+            android:textColor="#FFD700"
             android:layout_marginBottom="15dp"/>
 
         <ListView
@@ -72,6 +73,66 @@
             android:textColor="#778DA9"
             android:gravity="center"
             android:visibility="gone"/>
+
+    </LinearLayout>
+
+    <!-- Bottom Navigation Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#1B263B"
+        android:elevation="8dp"
+        android:gravity="center"
+        android:paddingVertical="8dp">
+
+        <Button
+            android:id="@+id/navHomeButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="🏠\nHome"
+            android:textSize="12sp"
+            android:textColor="#778DA9"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="8dp"/>
+
+        <Button
+            android:id="@+id/navFavouritesButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="❤️\nFavourites"
+            android:textSize="12sp"
+            android:textColor="#778DA9"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="8dp"/>
+
+        <Button
+            android:id="@+id/navHistoryButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="📺\nHistory"
+            android:textSize="12sp"
+            android:textColor="#FFD700"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="8dp"/>
+
+        <Button
+            android:id="@+id/navProfileButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="👤\nProfile"
+            android:textSize="12sp"
+            android:textColor="#778DA9"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="8dp"/>
 
     </LinearLayout>
 

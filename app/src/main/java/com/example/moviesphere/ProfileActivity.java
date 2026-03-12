@@ -2,18 +2,19 @@ package com.example.moviesphere;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 public class ProfileActivity extends AppCompatActivity {
 
     TextView usernameTextView;
-    LinearLayout historyLayout, favouritesLayout;
+    CardView historyLayout, favouritesLayout;
     Button backButton, logoutButton;
     SharedPreferences sharedPreferences;
     String username;
@@ -22,6 +23,9 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        // Force navigation bar color to match the app's bottom nav
+        getWindow().setNavigationBarColor(Color.parseColor("#1B263B"));
 
         sharedPreferences = getSharedPreferences("MovieSpherePrefs", MODE_PRIVATE);
         username = sharedPreferences.getString("username", "User");
@@ -66,6 +70,35 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 logout();
             }
+        });
+
+        setupBottomNavigation();
+    }
+
+    private void setupBottomNavigation() {
+        Button navHomeButton = findViewById(R.id.navHomeButton);
+        Button navFavouritesButton = findViewById(R.id.navFavouritesButton);
+        Button navHistoryButton = findViewById(R.id.navHistoryButton);
+        Button navProfileButton = findViewById(R.id.navProfileButton);
+
+        navHomeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+        });
+
+        navFavouritesButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfileActivity.this, MyFavouritesActivity.class);
+            startActivity(intent);
+        });
+
+        navHistoryButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfileActivity.this, HistoryActivity.class);
+            startActivity(intent);
+        });
+
+        navProfileButton.setOnClickListener(v -> {
+            // Already here
         });
     }
 

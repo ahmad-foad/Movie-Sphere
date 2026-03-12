@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -10,24 +11,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#1B263B"
+        android:background="@drawable/gradient_header"
         android:padding="15dp"
-        android:elevation="4dp">
+        android:elevation="8dp">
 
         <Button
             android:id="@+id/backButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:text="←"
-            android:textSize="24sp"
-            android:backgroundTint="#415A77"
+            android:text="⬅️"
+            android:textSize="20sp"
+            android:background="?attr/selectableItemBackground"
             android:textColor="#E0E1DD"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="👤 Profile"
+            android:text="👤 My Profile"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="#E0E1DD"
@@ -42,7 +43,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,111 +54,136 @@
             android:padding="20dp">
 
             <!-- Profile Card -->
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="#1B263B"
-                android:padding="25dp"
-                android:elevation="4dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
                 android:layout_marginBottom="25dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="👤"
-                    android:textSize="60sp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="15dp"/>
+                    android:orientation="vertical"
+                    android:background="@drawable/gradient_header"
+                    android:padding="25dp"
+                    android:gravity="center">
 
-                <TextView
-                    android:id="@+id/usernameTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Username"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:textColor="#E0E1DD"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="10dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="👤"
+                        android:textSize="60sp"
+                        android:layout_marginBottom="15dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="MovieSphere Member"
-                    android:textSize="16sp"
-                    android:textColor="#778DA9"
-                    android:layout_gravity="center"/>
+                    <TextView
+                        android:id="@+id/usernameTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Username"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:textColor="#E0E1DD"
+                        android:layout_marginBottom="10dp"/>
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🌟 Premium Member"
+                        android:textSize="14sp"
+                        android:textColor="#FFD700"/>
 
-            <!-- Menu Options -->
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Menu Options Title -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="📋 My Collection"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#E0E1DD"
+                android:textColor="#FFD700"
                 android:layout_marginBottom="15dp"/>
 
-            <!-- History Button -->
-            <LinearLayout
+            <!-- History Card -->
+            <androidx.cardview.widget.CardView
                 android:id="@+id/historyLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#1B263B"
-                android:padding="20dp"
-                android:layout_marginBottom="15dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                android:layout_marginBottom="12dp"
                 android:clickable="true"
-                android:focusable="true">
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
 
-                <TextView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="📺 History"
-                    android:textSize="18sp"
-                    android:textColor="#E0E1DD"/>
+                    android:orientation="horizontal"
+                    android:background="#1B263B"
+                    android:padding="20dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="→"
-                    android:textSize="24sp"
-                    android:textColor="#778DA9"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="📺 Watch History"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#E0E1DD"/>
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="→"
+                        android:textSize="24sp"
+                        android:textColor="#FFD700"/>
 
-            <!-- My Favourites Button -->
-            <LinearLayout
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- My Favourites Card -->
+            <androidx.cardview.widget.CardView
                 android:id="@+id/favouritesLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#1B263B"
-                android:padding="20dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
                 android:layout_marginBottom="30dp"
                 android:clickable="true"
-                android:focusable="true">
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
 
-                <TextView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="❤️ My Favourites"
-                    android:textSize="18sp"
-                    android:textColor="#E0E1DD"/>
+                    android:orientation="horizontal"
+                    android:background="#1B263B"
+                    android:padding="20dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="→"
-                    android:textSize="24sp"
-                    android:textColor="#778DA9"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="❤️ My Favourites"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#E0E1DD"/>
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="→"
+                        android:textSize="24sp"
+                        android:textColor="#FFD700"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
 
             <!-- Logout Button -->
             <Button
@@ -171,5 +199,65 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <!-- Bottom Navigation Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#1B263B"
+        android:elevation="8dp"
+        android:gravity="center"
+        android:paddingVertical="8dp">
+
+        <Button
+            android:id="@+id/navHomeButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="🏠\nHome"
+            android:textSize="12sp"
+            android:textColor="#778DA9"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="8dp"/>
+
+        <Button
+            android:id="@+id/navFavouritesButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="❤️\nFavourites"
+            android:textSize="12sp"
+            android:textColor="#778DA9"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="8dp"/>
+
+        <Button
+            android:id="@+id/navHistoryButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="📺\nHistory"
+            android:textSize="12sp"
+            android:textColor="#778DA9"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="8dp"/>
+
+        <Button
+            android:id="@+id/navProfileButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="👤\nProfile"
+            android:textSize="12sp"
+            android:textColor="#FFD700"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="8dp"/>
+
+    </LinearLayout>
 
 </LinearLayout>

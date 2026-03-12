@@ -2,6 +2,7 @@ package com.example.moviesphere;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,8 +21,7 @@ import java.util.HashMap;
 
 public class HomeActivity extends AppCompatActivity {
 
-    EditText searchEditText, yearEditText;
-    Button profileButton, proButton, clearFiltersButton;
+    EditText searchEditText;
     CheckBox actionCheckBox, comedyCheckBox, dramaCheckBox, horrorCheckBox, scifiCheckBox, thrillerCheckBox;
     ListView moviesListView;
 
@@ -34,6 +34,9 @@ public class HomeActivity extends AppCompatActivity {
     String username;
     int userId;
 
+    private static final String COLOR_ACTIVE = "#FFD700";
+    private static final String COLOR_INACTIVE = "#778DA9";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,10 +47,6 @@ public class HomeActivity extends AppCompatActivity {
         userId = sharedPreferences.getInt("userId", -1);
 
         searchEditText = findViewById(R.id.searchEditText);
-        yearEditText = findViewById(R.id.yearEditText);
-        profileButton = findViewById(R.id.profileButton);
-        proButton = findViewById(R.id.proButton);
-        clearFiltersButton = findViewById(R.id.clearFiltersButton);
 
         actionCheckBox = findViewById(R.id.actionCheckBox);
         comedyCheckBox = findViewById(R.id.comedyCheckBox);
@@ -85,16 +84,7 @@ public class HomeActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        profileButton.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
-            startActivity(intent);
-        });
-
-        proButton.setOnClickListener(v ->
-            Toast.makeText(HomeActivity.this, "⭐ Pro feature coming soon!", Toast.LENGTH_SHORT).show()
-        );
-
-        clearFiltersButton.setOnClickListener(v -> clearAllFilters());
+        setupBottomNavigation();
 
         CheckBox[] checkBoxes = {actionCheckBox, comedyCheckBox, dramaCheckBox, horrorCheckBox, scifiCheckBox, thrillerCheckBox};
         for (CheckBox checkBox : checkBoxes) {
@@ -112,6 +102,38 @@ public class HomeActivity extends AppCompatActivity {
             Intent intent = new Intent(HomeActivity.this, MovieDetailsActivity.class);
             intent.putExtra("movieTitle", movie.getTitle());
             intent.putExtra("imdbID", movie.getImdbID());
+            startActivity(intent);
+        });
+    }
+
+    private void setupBottomNavigation() {
+        Button navHomeButton = findViewById(R.id.navHomeButton);
+        Button navFavouritesButton = findViewById(R.id.navFavouritesButton);
+        Button navHistoryButton = findViewById(R.id.navHistoryButton);
+        Button navProfileButton = findViewById(R.id.navProfileButton);
+
+        // Set initial states
+        navHomeButton.setTextColor(Color.parseColor(COLOR_ACTIVE));
+        navFavouritesButton.setTextColor(Color.parseColor(COLOR_INACTIVE));
+        navHistoryButton.setTextColor(Color.parseColor(COLOR_INACTIVE));
+        navProfileButton.setTextColor(Color.parseColor(COLOR_INACTIVE));
+
+        navHomeButton.setOnClickListener(v -> {
+            // Already home
+        });
+
+        navFavouritesButton.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, MyFavouritesActivity.class);
+            startActivity(intent);
+        });
+
+        navHistoryButton.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, HistoryActivity.class);
+            startActivity(intent);
+        });
+
+        navProfileButton.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
             startActivity(intent);
         });
     }
@@ -165,13 +187,12 @@ public class HomeActivity extends AppCompatActivity {
 
     private void performSearch() {
         String query = searchEditText.getText().toString().trim();
-        String year = yearEditText.getText().toString().trim();
 
         if (query.isEmpty()) {
             return;
         }
 
-        searchMovies(query, year.isEmpty() ? null : year, null);
+        searchMovies(query, null, null);
     }
 
     private void searchMovies(String query, String year, String type) {
@@ -217,21 +238,6 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(HomeActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void clearAllFilters() {
-        searchEditText.setText("");
-        yearEditText.setText("");
-        actionCheckBox.setChecked(false);
-        comedyCheckBox.setChecked(false);
-        dramaCheckBox.setChecked(false);
-        horrorCheckBox.setChecked(false);
-        scifiCheckBox.setChecked(false);
-        thrillerCheckBox.setChecked(false);
-
-        moviesList.clear();
-        moviesList.addAll(allDefaultMovies);
-        movieAdapter.notifyDataSetChanged();
     }
 
     private void initializeGenreMappings() {
@@ -287,7 +293,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private void applyGenreFiltersToDefaults() {
         ArrayList<MovieItem> filteredMovies = new ArrayList<>();
-        String year = yearEditText.getText().toString().trim();
 
         ArrayList<String> selectedGenres = new ArrayList<>();
         if (actionCheckBox.isChecked()) selectedGenres.add("action");
@@ -312,9 +317,7 @@ public class HomeActivity extends AppCompatActivity {
                         }
                     }
 
-                    boolean matchesYear = year.isEmpty() || movie.getYear().contains(year);
-
-                    if (matchesGenre && matchesYear) {
+                    if (matchesGenre) {
                         filteredMovies.add(movie);
                     }
                 }
@@ -326,4 +329,3 @@ public class HomeActivity extends AppCompatActivity {
         movieAdapter.notifyDataSetChanged();
     }
 }
-

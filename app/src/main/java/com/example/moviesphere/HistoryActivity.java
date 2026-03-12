@@ -3,6 +3,7 @@ package com.example.moviesphere;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,6 +30,9 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+
+        // Force navigation bar color to match the app's bottom nav
+        getWindow().setNavigationBarColor(Color.parseColor("#1B263B"));
 
         databaseHelper = new DatabaseHelper(this);
         sharedPreferences = getSharedPreferences("MovieSpherePrefs", MODE_PRIVATE);
@@ -64,6 +68,35 @@ public class HistoryActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        setupBottomNavigation();
+    }
+
+    private void setupBottomNavigation() {
+        Button navHomeButton = findViewById(R.id.navHomeButton);
+        Button navFavouritesButton = findViewById(R.id.navFavouritesButton);
+        Button navHistoryButton = findViewById(R.id.navHistoryButton);
+        Button navProfileButton = findViewById(R.id.navProfileButton);
+
+        navHomeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(HistoryActivity.this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+        });
+
+        navFavouritesButton.setOnClickListener(v -> {
+            Intent intent = new Intent(HistoryActivity.this, MyFavouritesActivity.class);
+            startActivity(intent);
+        });
+
+        navHistoryButton.setOnClickListener(v -> {
+            // Already here
+        });
+
+        navProfileButton.setOnClickListener(v -> {
+            Intent intent = new Intent(HistoryActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void loadHistory() {
@@ -75,8 +108,10 @@ public class HistoryActivity extends AppCompatActivity {
                     String title = cursor.getString(cursor.getColumnIndexOrThrow("movie_title"));
                     String movieId = cursor.getString(cursor.getColumnIndexOrThrow("movie_id"));
                     String poster = cursor.getString(cursor.getColumnIndexOrThrow("poster_url"));
+                    String year = cursor.getString(cursor.getColumnIndexOrThrow("year"));
+                    String type = cursor.getString(cursor.getColumnIndexOrThrow("type"));
 
-                    historyList.add(new MovieItem(title, "", "Movie", movieId, poster));
+                    historyList.add(new MovieItem(title, year, type != null ? type : "Movie", movieId, poster));
                 }
 
                 movieAdapter.notifyDataSetChanged();

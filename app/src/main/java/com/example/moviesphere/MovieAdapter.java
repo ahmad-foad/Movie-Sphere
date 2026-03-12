@@ -24,7 +24,7 @@ public class MovieAdapter extends ArrayAdapter<MovieItem> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.movie_list_item, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.movie_item_card, parent, false);
         }
 
         MovieItem movie = movies.get(position);
@@ -35,8 +35,8 @@ public class MovieAdapter extends ArrayAdapter<MovieItem> {
         TextView typeTextView = convertView.findViewById(R.id.movieTypeTextView);
 
         titleTextView.setText(movie.getTitle());
-        yearTextView.setText("📅 " + movie.getYear());
-        typeTextView.setText("🎬 " + movie.getType());
+        yearTextView.setText(movie.getYear());
+        typeTextView.setText(movie.getType());
 
         // Load poster with Glide
         if (movie.getPoster() != null && !movie.getPoster().equals("N/A")) {

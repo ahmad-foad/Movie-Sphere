@@ -3,7 +3,6 @@ package com.example.moviesphere;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
-public class MyFavouritesActivity extends AppCompatActivity {
+public class FavouritesActivity extends AppCompatActivity {
 
     ListView favouritesListView;
     TextView emptyFavouritesTextView;
@@ -25,9 +24,6 @@ public class MyFavouritesActivity extends AppCompatActivity {
     ArrayList<MovieItem> favouritesList;
     MovieAdapter movieAdapter;
     int userId;
-
-    private static final String COLOR_ACTIVE = "#FFD700";
-    private static final String COLOR_INACTIVE = "#778DA9";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,46 +58,11 @@ public class MyFavouritesActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MovieItem movie = favouritesList.get(position);
 
-                Intent intent = new Intent(MyFavouritesActivity.this, MovieDetailsActivity.class);
+                Intent intent = new Intent(FavouritesActivity.this, MovieDetailsActivity.class);
                 intent.putExtra("movieTitle", movie.getTitle());
                 intent.putExtra("imdbID", movie.getImdbID());
                 startActivity(intent);
             }
-        });
-
-        setupBottomNavigation();
-    }
-
-    private void setupBottomNavigation() {
-        Button navHomeButton = findViewById(R.id.navHomeButton);
-        Button navFavouritesButton = findViewById(R.id.navFavouritesButton);
-        Button navHistoryButton = findViewById(R.id.navHistoryButton);
-        Button navProfileButton = findViewById(R.id.navProfileButton);
-
-        // Set initial states for Favourites screen
-        navHomeButton.setTextColor(Color.parseColor(COLOR_INACTIVE));
-        navFavouritesButton.setTextColor(Color.parseColor(COLOR_ACTIVE));
-        navHistoryButton.setTextColor(Color.parseColor(COLOR_INACTIVE));
-        navProfileButton.setTextColor(Color.parseColor(COLOR_INACTIVE));
-
-        navHomeButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MyFavouritesActivity.this, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            startActivity(intent);
-        });
-
-        navFavouritesButton.setOnClickListener(v -> {
-            // Already here
-        });
-
-        navHistoryButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MyFavouritesActivity.this, HistoryActivity.class);
-            startActivity(intent);
-        });
-
-        navProfileButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MyFavouritesActivity.this, ProfileActivity.class);
-            startActivity(intent);
         });
     }
 
@@ -141,3 +102,4 @@ public class MyFavouritesActivity extends AppCompatActivity {
         loadFavourites();
     }
 }
+
