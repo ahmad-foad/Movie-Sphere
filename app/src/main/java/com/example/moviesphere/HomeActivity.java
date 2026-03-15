@@ -2,18 +2,15 @@ package com.example.moviesphere;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -33,9 +30,8 @@ public class HomeActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     String username;
     int userId;
-
-    private static final String COLOR_ACTIVE = "#FFD700";
-    private static final String COLOR_INACTIVE = "#778DA9";
+    
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,35 +102,35 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        // Ensure home is selected when re-ordered to front
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        }
+    }
+
     private void setupBottomNavigation() {
-        Button navHomeButton = findViewById(R.id.navHomeButton);
-        Button navFavouritesButton = findViewById(R.id.navFavouritesButton);
-        Button navHistoryButton = findViewById(R.id.navHistoryButton);
-        Button navProfileButton = findViewById(R.id.navProfileButton);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
 
-        // Set initial states
-        navHomeButton.setTextColor(Color.parseColor(COLOR_ACTIVE));
-        navFavouritesButton.setTextColor(Color.parseColor(COLOR_INACTIVE));
-        navHistoryButton.setTextColor(Color.parseColor(COLOR_INACTIVE));
-        navProfileButton.setTextColor(Color.parseColor(COLOR_INACTIVE));
-
-        navHomeButton.setOnClickListener(v -> {
-            // Already home
-        });
-
-        navFavouritesButton.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, MyFavouritesActivity.class);
-            startActivity(intent);
-        });
-
-        navHistoryButton.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, HistoryActivity.class);
-            startActivity(intent);
-        });
-
-        navProfileButton.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
-            startActivity(intent);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_home) {
+                return true;
+            } else if (itemId == R.id.nav_favourites) {
+                startActivity(new Intent(this, MyFavouritesActivity.class));
+                return true;
+            } else if (itemId == R.id.nav_history) {
+                startActivity(new Intent(this, HistoryActivity.class));
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                startActivity(new Intent(this, ProfileActivity.class));
+                return true;
+            }
+            return false;
         });
     }
 

@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -24,7 +24,6 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // Force navigation bar color to match the app's bottom nav
         getWindow().setNavigationBarColor(Color.parseColor("#1B263B"));
 
         sharedPreferences = getSharedPreferences("MovieSpherePrefs", MODE_PRIVATE);
@@ -39,66 +38,41 @@ public class ProfileActivity extends AppCompatActivity {
         usernameTextView.setText(username);
 
         // Back button
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        backButton.setOnClickListener(v -> finish());
 
-        // History button
-        historyLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, HistoryActivity.class);
-                startActivity(intent);
-            }
-        });
+        // History card button
+        historyLayout.setOnClickListener(v -> startActivity(new Intent(ProfileActivity.this, HistoryActivity.class)));
 
-        // Favourites button
-        favouritesLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, MyFavouritesActivity.class);
-                startActivity(intent);
-            }
-        });
+        // Favourites card button
+        favouritesLayout.setOnClickListener(v -> startActivity(new Intent(ProfileActivity.this, MyFavouritesActivity.class)));
 
         // Logout button
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
-        });
+        logoutButton.setOnClickListener(v -> logout());
 
         setupBottomNavigation();
     }
 
     private void setupBottomNavigation() {
-        Button navHomeButton = findViewById(R.id.navHomeButton);
-        Button navFavouritesButton = findViewById(R.id.navFavouritesButton);
-        Button navHistoryButton = findViewById(R.id.navHistoryButton);
-        Button navProfileButton = findViewById(R.id.navProfileButton);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.nav_profile);
 
-        navHomeButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            startActivity(intent);
-        });
-
-        navFavouritesButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ProfileActivity.this, MyFavouritesActivity.class);
-            startActivity(intent);
-        });
-
-        navHistoryButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ProfileActivity.this, HistoryActivity.class);
-            startActivity(intent);
-        });
-
-        navProfileButton.setOnClickListener(v -> {
-            // Already here
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_home) {
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                return true;
+            } else if (itemId == R.id.nav_favourites) {
+                startActivity(new Intent(this, MyFavouritesActivity.class));
+                return true;
+            } else if (itemId == R.id.nav_history) {
+                startActivity(new Intent(this, HistoryActivity.class));
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                return true;
+            }
+            return false;
         });
     }
 

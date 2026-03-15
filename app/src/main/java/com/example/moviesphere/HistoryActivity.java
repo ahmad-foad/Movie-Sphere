@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 
 public class HistoryActivity extends AppCompatActivity {
@@ -31,7 +32,6 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        // Force navigation bar color to match the app's bottom nav
         getWindow().setNavigationBarColor(Color.parseColor("#1B263B"));
 
         databaseHelper = new DatabaseHelper(this);
@@ -49,60 +49,47 @@ public class HistoryActivity extends AppCompatActivity {
         loadHistory();
 
         // Back button
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        backButton.setOnClickListener(v -> finish());
 
         // Item click
-        historyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MovieItem movie = historyList.get(position);
-
-                Intent intent = new Intent(HistoryActivity.this, MovieDetailsActivity.class);
-                intent.putExtra("movieTitle", movie.getTitle());
-                intent.putExtra("imdbID", movie.getImdbID());
-                startActivity(intent);
-            }
+        historyListView.setOnItemClickListener((parent, view, position, id) -> {
+            MovieItem movie = historyList.get(position);
+            Intent intent = new Intent(HistoryActivity.this, MovieDetailsActivity.class);
+            intent.putExtra("movieTitle", movie.getTitle());
+            intent.putExtra("imdbID", movie.getImdbID());
+            startActivity(intent);
         });
 
         setupBottomNavigation();
     }
 
     private void setupBottomNavigation() {
-        Button navHomeButton = findViewById(R.id.navHomeButton);
-        Button navFavouritesButton = findViewById(R.id.navFavouritesButton);
-        Button navHistoryButton = findViewById(R.id.navHistoryButton);
-        Button navProfileButton = findViewById(R.id.navProfileButton);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.nav_history);
 
-        navHomeButton.setOnClickListener(v -> {
-            Intent intent = new Intent(HistoryActivity.this, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            startActivity(intent);
-        });
-
-        navFavouritesButton.setOnClickListener(v -> {
-            Intent intent = new Intent(HistoryActivity.this, MyFavouritesActivity.class);
-            startActivity(intent);
-        });
-
-        navHistoryButton.setOnClickListener(v -> {
-            // Already here
-        });
-
-        navProfileButton.setOnClickListener(v -> {
-            Intent intent = new Intent(HistoryActivity.this, ProfileActivity.class);
-            startActivity(intent);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_home) {
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                return true;
+            } else if (itemId == R.id.nav_favourites) {
+                startActivity(new Intent(this, MyFavouritesActivity.class));
+                return true;
+            } else if (itemId == R.id.nav_history) {
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                startActivity(new Intent(this, ProfileActivity.class));
+                return true;
+            }
+            return false;
         });
     }
 
     private void loadHistory() {
         if (userId != -1) {
             Cursor cursor = databaseHelper.getUserHistory(userId);
-
             if (cursor != null && cursor.getCount() > 0) {
                 while (cursor.moveToNext()) {
                     String title = cursor.getString(cursor.getColumnIndexOrThrow("movie_title"));
@@ -110,10 +97,8 @@ public class HistoryActivity extends AppCompatActivity {
                     String poster = cursor.getString(cursor.getColumnIndexOrThrow("poster_url"));
                     String year = cursor.getString(cursor.getColumnIndexOrThrow("year"));
                     String type = cursor.getString(cursor.getColumnIndexOrThrow("type"));
-
                     historyList.add(new MovieItem(title, year, type != null ? type : "Movie", movieId, poster));
                 }
-
                 movieAdapter.notifyDataSetChanged();
                 historyListView.setVisibility(View.VISIBLE);
                 emptyHistoryTextView.setVisibility(View.GONE);
@@ -121,10 +106,7 @@ public class HistoryActivity extends AppCompatActivity {
                 historyListView.setVisibility(View.GONE);
                 emptyHistoryTextView.setVisibility(View.VISIBLE);
             }
-
-            if (cursor != null) {
-                cursor.close();
-            }
+            if (cursor != null) cursor.close();
         }
     }
 }

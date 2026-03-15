@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 
 public class MyFavouritesActivity extends AppCompatActivity {
@@ -26,13 +27,12 @@ public class MyFavouritesActivity extends AppCompatActivity {
     MovieAdapter movieAdapter;
     int userId;
 
-    private static final String COLOR_ACTIVE = "#FFD700";
-    private static final String COLOR_INACTIVE = "#778DA9";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_favourites);
+
+        getWindow().setNavigationBarColor(Color.parseColor("#1B263B"));
 
         databaseHelper = new DatabaseHelper(this);
         sharedPreferences = getSharedPreferences("MovieSpherePrefs", MODE_PRIVATE);
@@ -49,76 +49,55 @@ public class MyFavouritesActivity extends AppCompatActivity {
         loadFavourites();
 
         // Back button
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        backButton.setOnClickListener(v -> finish());
 
         // Item click
-        favouritesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MovieItem movie = favouritesList.get(position);
-
-                Intent intent = new Intent(MyFavouritesActivity.this, MovieDetailsActivity.class);
-                intent.putExtra("movieTitle", movie.getTitle());
-                intent.putExtra("imdbID", movie.getImdbID());
-                startActivity(intent);
-            }
+        favouritesListView.setOnItemClickListener((parent, view, position, id) -> {
+            MovieItem movie = favouritesList.get(position);
+            Intent intent = new Intent(MyFavouritesActivity.this, MovieDetailsActivity.class);
+            intent.putExtra("movieTitle", movie.getTitle());
+            intent.putExtra("imdbID", movie.getImdbID());
+            startActivity(intent);
         });
 
         setupBottomNavigation();
     }
 
     private void setupBottomNavigation() {
-        Button navHomeButton = findViewById(R.id.navHomeButton);
-        Button navFavouritesButton = findViewById(R.id.navFavouritesButton);
-        Button navHistoryButton = findViewById(R.id.navHistoryButton);
-        Button navProfileButton = findViewById(R.id.navProfileButton);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.nav_favourites);
 
-        // Set initial states for Favourites screen
-        navHomeButton.setTextColor(Color.parseColor(COLOR_INACTIVE));
-        navFavouritesButton.setTextColor(Color.parseColor(COLOR_ACTIVE));
-        navHistoryButton.setTextColor(Color.parseColor(COLOR_INACTIVE));
-        navProfileButton.setTextColor(Color.parseColor(COLOR_INACTIVE));
-
-        navHomeButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MyFavouritesActivity.this, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            startActivity(intent);
-        });
-
-        navFavouritesButton.setOnClickListener(v -> {
-            // Already here
-        });
-
-        navHistoryButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MyFavouritesActivity.this, HistoryActivity.class);
-            startActivity(intent);
-        });
-
-        navProfileButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MyFavouritesActivity.this, ProfileActivity.class);
-            startActivity(intent);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_home) {
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                return true;
+            } else if (itemId == R.id.nav_favourites) {
+                return true;
+            } else if (itemId == R.id.nav_history) {
+                startActivity(new Intent(this, HistoryActivity.class));
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                startActivity(new Intent(this, ProfileActivity.class));
+                return true;
+            }
+            return false;
         });
     }
 
     private void loadFavourites() {
         if (userId != -1) {
             Cursor cursor = databaseHelper.getUserFavourites(userId);
-
             if (cursor != null && cursor.getCount() > 0) {
                 while (cursor.moveToNext()) {
                     String title = cursor.getString(cursor.getColumnIndexOrThrow("movie_title"));
                     String movieId = cursor.getString(cursor.getColumnIndexOrThrow("movie_id"));
                     String poster = cursor.getString(cursor.getColumnIndexOrThrow("poster_url"));
                     String year = cursor.getString(cursor.getColumnIndexOrThrow("year"));
-
                     favouritesList.add(new MovieItem(title, year, "Movie", movieId, poster));
                 }
-
                 movieAdapter.notifyDataSetChanged();
                 favouritesListView.setVisibility(View.VISIBLE);
                 emptyFavouritesTextView.setVisibility(View.GONE);
@@ -126,17 +105,13 @@ public class MyFavouritesActivity extends AppCompatActivity {
                 favouritesListView.setVisibility(View.GONE);
                 emptyFavouritesTextView.setVisibility(View.VISIBLE);
             }
-
-            if (cursor != null) {
-                cursor.close();
-            }
+            if (cursor != null) cursor.close();
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Refresh favourites when returning
         favouritesList.clear();
         loadFavourites();
     }
