@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#1B263B"
+    android:padding="20dp">
+
+    <!-- Handle Indicator -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:background="#415A77"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#B0BAC9"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🎭 Filter by Genre"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#FFD700"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- Genre Grid -->
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:alignmentMode="alignMargins"
+        android:layout_marginBottom="25dp">
+
+        <CheckBox
+            android:id="@+id/actionCheckBoxSheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:text="🎬 Action"
+            android:textColor="#E0E1DD"
+            android:buttonTint="#FFD700"
+            android:padding="10dp"/>
+
+        <CheckBox
+            android:id="@+id/comedyCheckBoxSheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:text="😂 Comedy"
+            android:textColor="#E0E1DD"
+            android:buttonTint="#FFD700"
+            android:padding="10dp"/>
+
+        <CheckBox
+            android:id="@+id/dramaCheckBoxSheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:text="🎭 Drama"
+            android:textColor="#E0E1DD"
+            android:buttonTint="#FFD700"
+            android:padding="10dp"/>
+
+        <CheckBox
+            android:id="@+id/horrorCheckBoxSheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:text="😱 Horror"
+            android:textColor="#E0E1DD"
+            android:buttonTint="#FFD700"
+            android:padding="10dp"/>
+
+        <CheckBox
+            android:id="@+id/scifiCheckBoxSheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:text="🚀 Sci-Fi"
+            android:textColor="#E0E1DD"
+            android:buttonTint="#FFD700"
+            android:padding="10dp"/>
+
+        <CheckBox
+            android:id="@+id/thrillerCheckBoxSheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:text="⚡ Thriller"
+            android:textColor="#E0E1DD"
+            android:buttonTint="#FFD700"
+            android:padding="10dp"/>
+
+    </GridLayout>
+
+    <!-- Buttons Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/resetButton"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:text="🔄 Reset"
+            android:backgroundTint="#0D1B2A"
+            android:textColor="#E0E1DD"
+            android:layout_marginEnd="10dp"/>
+
+        <Button
+            android:id="@+id/applyFilterButton"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:text="✅ Apply Filters"
+            android:backgroundTint="#FFD700"
+            android:textColor="#0D1B2A"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+</LinearLayout>

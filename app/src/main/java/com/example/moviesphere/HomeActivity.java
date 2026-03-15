@@ -5,12 +5,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -19,7 +22,7 @@ import java.util.HashMap;
 public class HomeActivity extends AppCompatActivity {
 
     EditText searchEditText;
-    CheckBox actionCheckBox, comedyCheckBox, dramaCheckBox, horrorCheckBox, scifiCheckBox, thrillerCheckBox;
+    Button filterButton;
     ListView moviesListView;
 
     ArrayList<MovieItem> moviesList;
@@ -33,6 +36,14 @@ public class HomeActivity extends AppCompatActivity {
     
     BottomNavigationView bottomNavigationView;
 
+    // Filter states
+    boolean isActionSelected = false;
+    boolean isComedySelected = false;
+    boolean isDramaSelected = false;
+    boolean isHorrorSelected = false;
+    boolean isScifiSelected = false;
+    boolean isThrillerSelected = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,14 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         userId = sharedPreferences.getInt("userId", -1);
 
         searchEditText = findViewById(R.id.searchEditText);
-
-        actionCheckBox = findViewById(R.id.actionCheckBox);
-        comedyCheckBox = findViewById(R.id.comedyCheckBox);
-        dramaCheckBox = findViewById(R.id.dramaCheckBox);
-        horrorCheckBox = findViewById(R.id.horrorCheckBox);
-        scifiCheckBox = findViewById(R.id.scifiCheckBox);
-        thrillerCheckBox = findViewById(R.id.thrillerCheckBox);
-
+        filterButton = findViewById(R.id.filterButton);
         moviesListView = findViewById(R.id.moviesListView);
 
         moviesList = new ArrayList<>();
@@ -80,18 +84,9 @@ public class HomeActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        setupBottomNavigation();
+        filterButton.setOnClickListener(v -> showFilterBottomSheet());
 
-        CheckBox[] checkBoxes = {actionCheckBox, comedyCheckBox, dramaCheckBox, horrorCheckBox, scifiCheckBox, thrillerCheckBox};
-        for (CheckBox checkBox : checkBoxes) {
-            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (searchEditText.getText().toString().trim().isEmpty()) {
-                    applyGenreFiltersToDefaults();
-                } else {
-                    performSearch();
-                }
-            });
-        }
+        setupBottomNavigation();
 
         moviesListView.setOnItemClickListener((parent, view, position, id) -> {
             MovieItem movie = moviesList.get(position);
@@ -102,11 +97,58 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+    private void showFilterBottomSheet() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view = getLayoutInflater().inflate(R.layout.layout_filter_bottom_sheet, null);
+        bottomSheetDialog.setContentView(view);
+
+        CheckBox actionCb = view.findViewById(R.id.actionCheckBoxSheet);
+        CheckBox comedyCb = view.findViewById(R.id.comedyCheckBoxSheet);
+        CheckBox dramaCb = view.findViewById(R.id.dramaCheckBoxSheet);
+        CheckBox horrorCb = view.findViewById(R.id.horrorCheckBoxSheet);
+        CheckBox scifiCb = view.findViewById(R.id.scifiCheckBoxSheet);
+        CheckBox thrillerCb = view.findViewById(R.id.thrillerCheckBoxSheet);
+        Button resetBtn = view.findViewById(R.id.resetButton);
+        Button applyBtn = view.findViewById(R.id.applyFilterButton);
+
+        // Set current states
+        actionCb.setChecked(isActionSelected);
+        comedyCb.setChecked(isComedySelected);
+        dramaCb.setChecked(isDramaSelected);
+        horrorCb.setChecked(isHorrorSelected);
+        scifiCb.setChecked(isScifiSelected);
+        thrillerCb.setChecked(isThrillerSelected);
+
+        resetBtn.setOnClickListener(v -> {
+            isActionSelected = isComedySelected = isDramaSelected = isHorrorSelected = isScifiSelected = isThrillerSelected = false;
+            applyGenreFiltersToDefaults();
+            bottomSheetDialog.dismiss();
+            Toast.makeText(this, "Filters reset", Toast.LENGTH_SHORT).show();
+        });
+
+        applyBtn.setOnClickListener(v -> {
+            isActionSelected = actionCb.isChecked();
+            isComedySelected = comedyCb.isChecked();
+            isDramaSelected = dramaCb.isChecked();
+            isHorrorSelected = horrorCb.isChecked();
+            isScifiSelected = scifiCb.isChecked();
+            isThrillerSelected = thrillerCb.isChecked();
+
+            if (searchEditText.getText().toString().trim().isEmpty()) {
+                applyGenreFiltersToDefaults();
+            } else {
+                performSearch();
+            }
+            bottomSheetDialog.dismiss();
+        });
+
+        bottomSheetDialog.show();
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        // Ensure home is selected when re-ordered to front
         if (bottomNavigationView != null) {
             bottomNavigationView.setSelectedItemId(R.id.nav_home);
         }
@@ -170,24 +212,20 @@ public class HomeActivity extends AppCompatActivity {
                         movieAdapter.notifyDataSetChanged();
                     }
                 } catch (Exception e) {
-                    // Silently fail
                 }
             }
 
             @Override
             public void onError(String error) {
-                // Silently fail
             }
         });
     }
 
     private void performSearch() {
         String query = searchEditText.getText().toString().trim();
-
         if (query.isEmpty()) {
             return;
         }
-
         searchMovies(query, null, null);
     }
 
@@ -198,27 +236,20 @@ public class HomeActivity extends AppCompatActivity {
                 try {
                     if (movieData.getString("Response").equals("True")) {
                         JSONArray searchResults = movieData.getJSONArray("Search");
-
                         moviesList.clear();
-
                         for (int i = 0; i < searchResults.length(); i++) {
                             JSONObject movie = searchResults.getJSONObject(i);
-
                             String title = movie.getString("Title");
                             String movieYear = movie.getString("Year");
                             String movieType = movie.getString("Type");
                             String imdbID = movie.getString("imdbID");
                             String poster = movie.optString("Poster", "N/A");
-
                             moviesList.add(new MovieItem(title, movieYear, movieType, imdbID, poster));
                         }
-
                         movieAdapter.notifyDataSetChanged();
-
                         if (moviesList.isEmpty()) {
                             Toast.makeText(HomeActivity.this, "No movies found", Toast.LENGTH_SHORT).show();
                         }
-
                     } else {
                         moviesList.clear();
                         movieAdapter.notifyDataSetChanged();
@@ -289,14 +320,13 @@ public class HomeActivity extends AppCompatActivity {
 
     private void applyGenreFiltersToDefaults() {
         ArrayList<MovieItem> filteredMovies = new ArrayList<>();
-
         ArrayList<String> selectedGenres = new ArrayList<>();
-        if (actionCheckBox.isChecked()) selectedGenres.add("action");
-        if (comedyCheckBox.isChecked()) selectedGenres.add("comedy");
-        if (dramaCheckBox.isChecked()) selectedGenres.add("drama");
-        if (horrorCheckBox.isChecked()) selectedGenres.add("horror");
-        if (scifiCheckBox.isChecked()) selectedGenres.add("sci-fi");
-        if (thrillerCheckBox.isChecked()) selectedGenres.add("thriller");
+        if (isActionSelected) selectedGenres.add("action");
+        if (isComedySelected) selectedGenres.add("comedy");
+        if (isDramaSelected) selectedGenres.add("drama");
+        if (isHorrorSelected) selectedGenres.add("horror");
+        if (isScifiSelected) selectedGenres.add("sci-fi");
+        if (isThrillerSelected) selectedGenres.add("thriller");
 
         if (selectedGenres.isEmpty()) {
             moviesList.clear();
@@ -312,7 +342,6 @@ public class HomeActivity extends AppCompatActivity {
                             break;
                         }
                     }
-
                     if (matchesGenre) {
                         filteredMovies.add(movie);
                     }
@@ -321,7 +350,6 @@ public class HomeActivity extends AppCompatActivity {
             moviesList.clear();
             moviesList.addAll(filteredMovies);
         }
-
         movieAdapter.notifyDataSetChanged();
     }
 }

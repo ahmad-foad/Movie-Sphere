@@ -56,41 +56,55 @@
             android:orientation="vertical"
             android:padding="15dp">
 
-            <!-- Search Bar with Icon -->
+            <!-- Search Area with Filter Button -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:background="@drawable/rounded_search_background"
                 android:gravity="center_vertical"
-                android:paddingHorizontal="12dp"
                 android:layout_marginBottom="20dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🔍"
-                    android:textSize="18sp"
-                    android:layout_marginRight="8dp"/>
-
-                <EditText
-                    android:id="@+id/searchEditText"
+                <!-- Search Bar -->
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:hint="Search movies..."
-                    android:padding="12dp"
-                    android:textColor="#E0E1DD"
-                    android:textColorHint="#415A77"
-                    android:textSize="16sp"
-                    android:inputType="text"/>
+                    android:orientation="horizontal"
+                    android:background="@drawable/rounded_search_background"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:layout_marginEnd="10dp">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🔍"
+                        android:textSize="18sp"
+                        android:layout_marginRight="8dp"/>
+
+                    <EditText
+                        android:id="@+id/searchEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:hint="Search movies..."
+                        android:padding="12dp"
+                        android:textColor="#E0E1DD"
+                        android:textColorHint="#415A77"
+                        android:textSize="16sp"
+                        android:inputType="text"/>
+
+                </LinearLayout>
+
+                <!-- Filter Button -->
                 <Button
-                    android:id="@+id/top250Button"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:visibility="gone"/>
+                    android:id="@+id/filterButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/rounded_button_gold"
+                    android:text="🛠️"
+                    android:textSize="20sp"
+                    android:padding="0dp"/>
 
             </LinearLayout>
 
@@ -103,104 +117,6 @@
                 android:textStyle="bold"
                 android:textColor="#FFD700"
                 android:layout_marginBottom="12dp"/>
-
-            <!-- Genre Filters with Chips -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="🎭 Filter by Genre"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="#E0E1DD"
-                android:layout_marginBottom="12dp"
-                android:layout_marginTop="8dp"/>
-
-            <!-- Genre Checkboxes Row 1 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
-
-                <CheckBox
-                    android:id="@+id/actionCheckBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="🎬 Action"
-                    android:textColor="#E0E1DD"
-                    android:textSize="13sp"
-                    android:buttonTint="#FFD700"/>
-
-                <CheckBox
-                    android:id="@+id/comedyCheckBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="😂 Comedy"
-                    android:textColor="#E0E1DD"
-                    android:textSize="13sp"
-                    android:buttonTint="#FFD700"/>
-
-            </LinearLayout>
-
-            <!-- Genre Checkboxes Row 2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
-
-                <CheckBox
-                    android:id="@+id/dramaCheckBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="🎭 Drama"
-                    android:textColor="#E0E1DD"
-                    android:textSize="13sp"
-                    android:buttonTint="#FFD700"/>
-
-                <CheckBox
-                    android:id="@+id/horrorCheckBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="😱 Horror"
-                    android:textColor="#E0E1DD"
-                    android:textSize="13sp"
-                    android:buttonTint="#FFD700"/>
-
-            </LinearLayout>
-
-            <!-- Genre Checkboxes Row 3 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="20dp">
-
-                <CheckBox
-                    android:id="@+id/scifiCheckBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="🚀 Sci-Fi"
-                    android:textColor="#E0E1DD"
-                    android:textSize="13sp"
-                    android:buttonTint="#FFD700"/>
-
-                <CheckBox
-                    android:id="@+id/thrillerCheckBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="⚡ Thriller"
-                    android:textColor="#E0E1DD"
-                    android:textSize="13sp"
-                    android:buttonTint="#FFD700"/>
-
-            </LinearLayout>
 
             <!-- Divider -->
             <View
