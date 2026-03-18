@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +17,6 @@ public class HistoryActivity extends AppCompatActivity {
 
     ListView historyListView;
     TextView emptyHistoryTextView;
-    Button backButton;
 
     DatabaseHelper databaseHelper;
     SharedPreferences sharedPreferences;
@@ -40,16 +38,12 @@ public class HistoryActivity extends AppCompatActivity {
 
         historyListView = findViewById(R.id.historyListView);
         emptyHistoryTextView = findViewById(R.id.emptyHistoryTextView);
-        backButton = findViewById(R.id.backButton);
 
         historyList = new ArrayList<>();
         movieAdapter = new MovieAdapter(this, historyList);
         historyListView.setAdapter(movieAdapter);
 
         loadHistory();
-
-        // Back button
-        backButton.setOnClickListener(v -> finish());
 
         // Item click
         historyListView.setOnItemClickListener((parent, view, position, id) -> {
@@ -89,6 +83,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     private void loadHistory() {
         if (userId != -1) {
+            historyList.clear(); // Clear existing list before reloading
             Cursor cursor = databaseHelper.getUserHistory(userId);
             if (cursor != null && cursor.getCount() > 0) {
                 while (cursor.moveToNext()) {
@@ -108,5 +103,11 @@ public class HistoryActivity extends AppCompatActivity {
             }
             if (cursor != null) cursor.close();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadHistory(); // Refresh history whenever the activity comes to foreground
     }
 }

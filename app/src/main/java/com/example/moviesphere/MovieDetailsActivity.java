@@ -6,10 +6,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import org.json.JSONObject;
 
@@ -18,7 +20,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
     ImageView moviePosterImageView;
     TextView movieTitleTextView, movieYearTextView, movieRatingTextView, movieRuntimeTextView;
     TextView movieGenreTextView, moviePlotTextView;
-    Button favouriteButton, shareButton, trailerButton, backButton;
+    Button favouriteButton, shareButton, trailerButton;
+    ImageButton backButton;
 
     DatabaseHelper databaseHelper;
     SharedPreferences sharedPreferences;
@@ -192,11 +195,13 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     private void updateFavouriteButton() {
         if (isFavourite) {
-            favouriteButton.setText("❤️ Favourited");
-            favouriteButton.setBackgroundTintList(getResources().getColorStateList(android.R.color.holo_red_dark));
+            favouriteButton.setText("Favourited");
+            favouriteButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite, 0, 0, 0);
+            favouriteButton.setBackgroundTintList(ContextCompat.getColorStateList(this, android.R.color.holo_red_dark));
         } else {
-            favouriteButton.setText("🤍 Favourite");
-            favouriteButton.setBackgroundTintList(null);
+            favouriteButton.setText("Favourite");
+            favouriteButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite, 0, 0, 0);
+            favouriteButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.nav_item_color));
         }
     }
 

@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +15,6 @@ public class FavouritesActivity extends AppCompatActivity {
 
     ListView favouritesListView;
     TextView emptyFavouritesTextView;
-    Button backButton;
 
     DatabaseHelper databaseHelper;
     SharedPreferences sharedPreferences;
@@ -36,21 +34,12 @@ public class FavouritesActivity extends AppCompatActivity {
 
         favouritesListView = findViewById(R.id.favouritesListView);
         emptyFavouritesTextView = findViewById(R.id.emptyFavouritesTextView);
-        backButton = findViewById(R.id.backButton);
 
         favouritesList = new ArrayList<>();
         movieAdapter = new MovieAdapter(this, favouritesList);
         favouritesListView.setAdapter(movieAdapter);
 
         loadFavourites();
-
-        // Back button
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         // Item click
         favouritesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -102,4 +91,3 @@ public class FavouritesActivity extends AppCompatActivity {
         loadFavourites();
     }
 }
-

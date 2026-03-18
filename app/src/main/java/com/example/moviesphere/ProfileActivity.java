@@ -15,7 +15,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     TextView usernameTextView;
     CardView historyLayout, favouritesLayout;
-    Button backButton, logoutButton;
+    Button logoutButton;
     SharedPreferences sharedPreferences;
     String username;
 
@@ -32,13 +32,9 @@ public class ProfileActivity extends AppCompatActivity {
         usernameTextView = findViewById(R.id.usernameTextView);
         historyLayout = findViewById(R.id.historyLayout);
         favouritesLayout = findViewById(R.id.favouritesLayout);
-        backButton = findViewById(R.id.backButton);
         logoutButton = findViewById(R.id.logoutButton);
 
         usernameTextView.setText(username);
-
-        // Back button
-        backButton.setOnClickListener(v -> finish());
 
         // History card button
         historyLayout.setOnClickListener(v -> startActivity(new Intent(ProfileActivity.this, HistoryActivity.class)));

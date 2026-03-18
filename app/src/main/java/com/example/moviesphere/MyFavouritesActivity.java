@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +17,6 @@ public class MyFavouritesActivity extends AppCompatActivity {
 
     ListView favouritesListView;
     TextView emptyFavouritesTextView;
-    Button backButton;
 
     DatabaseHelper databaseHelper;
     SharedPreferences sharedPreferences;
@@ -40,16 +38,12 @@ public class MyFavouritesActivity extends AppCompatActivity {
 
         favouritesListView = findViewById(R.id.favouritesListView);
         emptyFavouritesTextView = findViewById(R.id.emptyFavouritesTextView);
-        backButton = findViewById(R.id.backButton);
 
         favouritesList = new ArrayList<>();
         movieAdapter = new MovieAdapter(this, favouritesList);
         favouritesListView.setAdapter(movieAdapter);
 
         loadFavourites();
-
-        // Back button
-        backButton.setOnClickListener(v -> finish());
 
         // Item click
         favouritesListView.setOnItemClickListener((parent, view, position, id) -> {

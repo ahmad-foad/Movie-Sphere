@@ -22,11 +22,18 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_movie"
+                android:layout_marginEnd="10dp"
+                app:tint="#E0E1DD"/>
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="🎬 MovieSphere"
+                android:text="MovieSphere"
                 android:textSize="28sp"
                 android:textStyle="bold"
                 android:textColor="#E0E1DD"/>
@@ -75,12 +82,12 @@
                     android:paddingHorizontal="12dp"
                     android:layout_marginEnd="10dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🔍"
-                        android:textSize="18sp"
-                        android:layout_marginRight="8dp"/>
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_search"
+                        android:layout_marginEnd="8dp"
+                        app:tint="#415A77"/>
 
                     <EditText
                         android:id="@+id/searchEditText"
@@ -102,21 +109,33 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@drawable/rounded_button_gold"
-                    android:text="🛠️"
-                    android:textSize="20sp"
-                    android:padding="0dp"/>
+                    android:drawableTop="@drawable/ic_filter"
+                    android:paddingTop="12dp"/>
 
             </LinearLayout>
 
             <!-- Trending/Popular Section Title -->
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="✨ Trending Now"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#FFD700"
-                android:layout_marginBottom="12dp"/>
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_star"
+                    android:layout_marginEnd="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Trending Now"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFD700"/>
+            </LinearLayout>
 
             <!-- Divider -->
             <View
@@ -126,14 +145,28 @@
                 android:layout_marginBottom="15dp"/>
 
             <!-- Movies List Title -->
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🎬 Movies"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="#E0E1DD"
-                android:layout_marginBottom="15dp"/>
+                android:orientation="horizontal"
+                android:layout_marginBottom="15dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_movie"
+                    android:layout_marginEnd="8dp"
+                    app:tint="#E0E1DD"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Movies"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#E0E1DD"/>
+            </LinearLayout>
 
             <!-- Movies ListView -->
             <ListView
