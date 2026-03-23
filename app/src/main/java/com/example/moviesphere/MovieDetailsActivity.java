@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -73,36 +72,16 @@ public class MovieDetailsActivity extends AppCompatActivity {
         fetchMovieDetails();
 
         // Favourite button
-        favouriteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleFavourite();
-            }
-        });
+        favouriteButton.setOnClickListener(v -> toggleFavourite());
 
         // Share button
-        shareButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shareMovie();
-            }
-        });
+        shareButton.setOnClickListener(v -> shareMovie());
 
         // Watch trailer button
-        trailerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                watchTrailer();
-            }
-        });
+        trailerButton.setOnClickListener(v -> watchTrailer());
 
         // Back button
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        backButton.setOnClickListener(v -> finish());
     }
 
     private void fetchMovieDetails() {

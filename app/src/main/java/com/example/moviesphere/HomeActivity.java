@@ -212,11 +212,13 @@ public class HomeActivity extends AppCompatActivity {
                         movieAdapter.notifyDataSetChanged();
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
             @Override
             public void onError(String error) {
+                // Error loading default movie - will try next one
             }
         });
     }

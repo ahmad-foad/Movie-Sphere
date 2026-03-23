@@ -1,8 +1,6 @@
 package com.example.moviesphere;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,19 +28,8 @@ public class SignUpActivity extends AppCompatActivity {
         signUpButton = findViewById(R.id.signUpButton);
         loginTextView = findViewById(R.id.loginTextView);
 
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                registerUser();
-            }
-        });
-
-        loginTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        signUpButton.setOnClickListener(v -> registerUser());
+        loginTextView.setOnClickListener(v -> finish());
     }
 
     private void registerUser() {
