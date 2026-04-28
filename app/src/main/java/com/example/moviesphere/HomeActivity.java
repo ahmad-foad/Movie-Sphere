@@ -3,6 +3,8 @@ package com.example.moviesphere;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -36,6 +38,11 @@ public class HomeActivity extends AppCompatActivity {
     
     BottomNavigationView bottomNavigationView;
 
+    // Debouncing for search
+    private Handler mHandler;
+    private Runnable mSearchRunnable;
+    private static final long SEARCH_DELAY = 500; // 500ms delay
+
     // Filter states
     boolean isActionSelected = false;
     boolean isComedySelected = false;
@@ -63,20 +70,31 @@ public class HomeActivity extends AppCompatActivity {
         movieAdapter = new MovieAdapter(this, moviesList);
         moviesListView.setAdapter(movieAdapter);
 
+        // Initialize Handler for debouncing
+        mHandler = new Handler(Looper.getMainLooper());
+
         initializeGenreMappings();
         loadDefaultMovies();
 
+        // Debounced search listener
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Remove previous callback to cancel pending searches
+                if (mSearchRunnable != null) {
+                    mHandler.removeCallbacks(mSearchRunnable);
+                }
+
                 String query = s.toString().trim();
                 if (query.isEmpty()) {
                     applyGenreFiltersToDefaults();
                 } else {
-                    performSearch();
+                    // Create new search task with delay
+                    mSearchRunnable = () -> performSearch();
+                    mHandler.postDelayed(mSearchRunnable, SEARCH_DELAY);
                 }
             }
 
