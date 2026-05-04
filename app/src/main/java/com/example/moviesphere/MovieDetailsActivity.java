@@ -19,8 +19,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
     ImageView moviePosterImageView;
     TextView movieTitleTextView, movieYearTextView, movieRatingTextView, movieRuntimeTextView;
     TextView movieGenreTextView, moviePlotTextView;
-    Button favouriteButton, shareButton, trailerButton;
-    ImageButton backButton;
+    ImageButton favouriteButton, backButton;
+    Button shareButton, trailerButton;
 
     DatabaseHelper databaseHelper;
     SharedPreferences sharedPreferences;
@@ -174,13 +174,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     private void updateFavouriteButton() {
         if (isFavourite) {
-            favouriteButton.setText("Favourited");
-            favouriteButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite, 0, 0, 0);
-            favouriteButton.setBackgroundTintList(ContextCompat.getColorStateList(this, android.R.color.holo_red_dark));
+            favouriteButton.setImageResource(R.drawable.ic_star_filled);
         } else {
-            favouriteButton.setText("Favourite");
-            favouriteButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite, 0, 0, 0);
-            favouriteButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.nav_item_color));
+            favouriteButton.setImageResource(R.drawable.ic_star_empty);
         }
     }
 
